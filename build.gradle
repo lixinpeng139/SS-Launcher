@@ -1,0 +1,161 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+group = 'com.sslauncher'
+version = '1.0.0'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+repositories {
+    mavenCentral()
+    // jvm-libp2p is published by the libp2p project on Cloudsmith (JitPack as fallback).
+    maven { url = uri('https://dl.cloudsmith.io/public/libp2p/jvm-libp2p/maven/') }
+    maven { url = uri('https://artifacts.consensys.net/public/maven/maven/') }
+    maven { url = uri('https://jitpack.io') }
+}
+
+def javafxVersion = '21.0.8'
+def javafxPlatform = 'win'
+
+dependencies {
+    implementation "org.openjfx:javafx-base:${javafxVersion}:${javafxPlatform}"
+    implementation "org.openjfx:javafx-graphics:${javafxVersion}:${javafxPlatform}"
+    implementation "org.openjfx:javafx-controls:${javafxVersion}:${javafxPlatform}"
+    implementation 'com.google.code.gson:gson:2.11.0'
+
+    // Windows DPAPI (CryptProtectData) for account tokens at rest. JNA is
+    // loaded lazily and only used on Windows; the launcher falls back to
+    // AES-GCM when it is unavailable.
+    implementation 'net.java.dev.jna:jna:5.14.0'
+    implementation 'net.java.dev.jna:jna-platform:5.14.0'
+
+    // Modrinth serves search-result icons as WebP, which the JavaFX image
+    // loader cannot read. TwelveMonkeys adds a pure-Java WebP decoder to
+    // ImageIO; it is read-only and has no native dependencies.
+    implementation 'com.twelvemonkeys.imageio:imageio-webp:3.12.0'
+
+    // Pure-Java Opus codec used by the P2P voice chat (no native libraries).
+    implementation 'io.github.jaredmdobson:concentus:1.0.2'
+
+    // Reliable, ordered message transport over UDP (MIT). Used only after a
+    // UDP hole punch succeeds; game and voice data still go directly between
+    // the two players and never through the bootstrap server.
+    implementation 'io.jpower.kcp:kcp-netty:1.5.2'
+
+    // P2P multiplayer: only the TCP transport is used, so the optional QUIC/native
+    // artefacts are excluded to keep the distribution small.
+    implementation('io.libp2p:jvm-libp2p:1.3.8-RELEASE') {
+        exclude group: 'io.netty', module: 'netty-codec-native-quic'
+        exclude group: 'io.netty', module: 'netty-tcnative-boringssl-static'
+        exclude group: 'io.netty', module: 'netty-transport-classes-epoll'
+    }
+    // jvm-libp2p declares Netty and Kotlin as runtime-scoped dependencies, but
+    // its public API exposes Kotlin types (Function0) and Netty channel classes,
+    // so both are needed on the compile classpath as well.
+    implementation 'io.netty:netty-handler:4.2.18.Final'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.21'
+    implementation 'org.slf4j:slf4j-nop:2.0.9'
+
+    testImplementation platform('org.junit:junit-bom:5.11.3')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+application {
+    applicationName = 'SS-Launcher'
+    mainClass = 'com.sslauncher.Main'
+    applicationDefaultJvmArgs = ['-Dfile.encoding=UTF-8', '-Dsun.stdout.encoding=UTF-8']
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.release = 21
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+    // Opt-in live probe against the deployed bootstrap server.
+    systemProperty 'ss.udpProbe', System.getProperty('ss.udpProbe', 'false')
+    // Opt-in live room reachability diagnostic.
+    systemProperty 'ss.diag', System.getProperty('ss.diag', 'false')
+    systemProperty 'ss.room', System.getProperty('ss.room', '')
+    // Opt-in local mock server probe for skin fetch/upload/reset.
+    systemProperty 'ss.skinProbe', System.getProperty('ss.skinProbe', 'false')
+}
+
+// Development-only end-to-end probe for installation and launching.
+// Example: ./gradlew e2e --args="install fabric 1.20.1" -PssHome=C:/tmp/ss-probe
+tasks.register('e2e', JavaExec) {
+    group = 'verification'
+    description = 'Runs the install/launch probe against a separate data directory'
+    classpath = sourceSets.test.output + sourceSets.main.runtimeClasspath
+    mainClass = 'com.sslauncher.service.InstallProbe'
+    def probeHome = project.findProperty('ssHome')
+            ?: new File(System.getenv('APPDATA') ?: System.getProperty('user.home'), 'SSLauncher-e2e').absolutePath
+    systemProperty 'ss.home', probeHome.toString()
+    ['ss.source', 'ss.threads'].each { key ->
+        if (project.hasProperty(key)) {
+            systemProperty key, project.property(key).toString()
+        }
+    }
+    jvmArgs '-Dfile.encoding=UTF-8', '-Dsun.stdout.encoding=UTF-8', '-Dsun.stderr.encoding=UTF-8'
+}
+
+// Development-only end-to-end probe for the in-process AI 助手 loop.
+// Example: ./gradlew assistantProbe -PssHome=C:/tmp/ss-assistant-probe
+tasks.register('assistantProbe', JavaExec) {
+    group = 'verification'
+    description = 'Runs a fake-model assistant turn through the launcher tools'
+    classpath = sourceSets.test.output + sourceSets.main.runtimeClasspath
+    mainClass = 'com.sslauncher.ai.assistant.AssistantProbe'
+    def probeHome = project.findProperty('ssHome')
+            ?: new File(project.layout.buildDirectory.get().asFile, 'assistant-probe-home').absolutePath
+    args probeHome.toString()
+    jvmArgs '-Dfile.encoding=UTF-8', '-Dsun.stdout.encoding=UTF-8', '-Dsun.stderr.encoding=UTF-8'
+}
+
+// Development-only UI screenshot harness.
+// Example: ./gradlew uiShot -Ppage=HOME -Pshot=build/home.png
+tasks.register('uiShot', JavaExec) {
+    group = 'verification'
+    description = 'Renders the launcher window to a PNG for visual checks'
+    classpath = sourceSets.test.output + sourceSets.main.runtimeClasspath
+    mainClass = 'com.sslauncher.service.UiProbe'
+    def probeHome = project.findProperty('ssHome')
+            ?: new File(System.getenv('APPDATA') ?: System.getProperty('user.home'), 'SSLauncher-e2e').absolutePath
+    systemProperty 'ss.home', probeHome.toString()
+    [page: 'ss.page', scroll: 'ss.scroll', dialog: 'ss.dialog',
+     loginTab: 'ss.loginTab', shot: 'ss.shot', delay: 'ss.shotDelay',
+     filesCategory: 'ss.filesCategory',
+     resourceQuery: 'ss.resourceQuery', resourceKind: 'ss.resourceKind',
+     resourceSource: 'ss.resourceSource', resourceInstance: 'ss.resourceInstance',
+     resourceOpen: 'ss.resourceOpen',
+     modpackDrop: 'ss.modpackDrop', modpackDropOverlay: 'ss.modpackDropOverlay',
+     drop: 'ss.drop', dropOverlay: 'ss.dropOverlay',
+     multiplayerDemo: 'ss.multiplayerDemo'].each { prop, key ->
+        if (project.hasProperty(prop)) {
+            systemProperty key, project.property(prop).toString()
+        }
+    }
+    systemProperty 'ss.shot', project.findProperty('shot')
+            ?: new File(project.layout.buildDirectory.get().asFile, 'ui-shot.png').absolutePath
+    if (project.hasProperty('dump')) {
+        systemProperty 'ss.dump', 'true'
+    }
+    jvmArgs '-Dfile.encoding=UTF-8'
+}
+
+jar {
+    manifest {
+        attributes(
+            'Main-Class': 'com.sslauncher.Main',
+            'Implementation-Title': 'SS Launcher',
+            'Implementation-Version': project.version
+        )
+    }
+}

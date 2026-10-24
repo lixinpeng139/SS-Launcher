@@ -1,0 +1,31 @@
+[Unit]
+Description=SS Launcher bootstrap server
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=sslauncher
+Group=sslauncher
+Environment=SS_HOME=/var/lib/sslauncher-bootstrap
+Environment=SS_PORT=4001
+# UDP 端点发现（打洞）；默认与 SS_PORT 相同。安全组需同时放行 UDP。
+Environment=SS_UDP_PORT=4001
+# 填入服务器公网 IP 后，启动日志会直接打印客户端要填写的完整地址
+#Environment=SS_PUBLIC_HOST=1.2.3.4
+#Environment=SS_MAX_ROOMS=500
+#Environment=SS_MAX_GUESTS=8
+#Environment=SS_PING_SECONDS=45
+#Environment=SS_IDLE_SECONDS=150
+ExecStart=/opt/sslauncher-bootstrap/bin/sslauncher-bootstrap
+Restart=always
+RestartSec=3
+LimitNOFILE=65536
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/sslauncher-bootstrap
+
+[Install]
+WantedBy=multi-user.target

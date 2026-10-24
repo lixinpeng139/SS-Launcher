@@ -1,0 +1,4 @@
+rootProject.name = 'SS-Launcher'
+
+// Standalone bootstrap/rendezvous server for the multiplayer feature.
+include 'server'

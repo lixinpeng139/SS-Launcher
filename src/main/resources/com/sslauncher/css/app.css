@@ -1,0 +1,2134 @@
+/* ==========================================================================
+   SS Launcher — Minecraft Java 版启动器
+
+   Every colour below is a looked-up colour (-md-*) published by Theme.java
+   from the Monet palette of the current background. Nothing here uses
+   gradients: surfaces are flat, translucent tones of one colour family.
+
+   Minecraft touches: raised buttons with a light top-left and dark
+   bottom-right bevel, inputs and icons sunk into inventory slots, a block
+   bullet in front of section headings, an XP-bar style progress bar and a
+   rectangular slider handle.
+   ========================================================================== */
+
+.root {
+    -fx-font-family: "Microsoft YaHei UI", "Microsoft YaHei", "PingFang SC", "Segoe UI";
+    -fx-font-size: 13px;
+    -fx-text-fill: -md-on-surface;
+    -fx-background-color: transparent;
+    -fx-focus-color: -md-primary;
+    -fx-faint-focus-color: transparent;
+    -fx-accent: -md-primary-container;
+}
+
+.app-shell {
+    -fx-background-color: -md-surface;
+    -fx-background-radius: 10;
+}
+
+/*
+ * The window shadow is painted by a separate, static layer behind the shell.
+ * Keeping it off the live shell means scrolling and hovering no longer force
+ * the renderer to blur the entire window on every frame.
+ */
+.app-shadow {
+    -fx-background-color: -md-surface;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, -md-shadow, 30, 0.15, 0, 10);
+}
+
+.backdrop {
+    -fx-background-color: -md-surface;
+}
+
+.backdrop-dim {
+    -fx-background-color: -md-surface-dim;
+}
+
+/* ------------------------------------------------------------------ top bar */
+
+.top-bar {
+    -fx-padding: 0 10 0 18;
+    -fx-background-color: -md-glass-bar;
+    -fx-border-color: transparent transparent -md-line transparent;
+    -fx-border-width: 0 0 1 0;
+}
+
+.brand-name {
+    -fx-text-fill: -md-on-surface;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+.brand-sub {
+    -fx-text-fill: -md-faint;
+    -fx-font-size: 10px;
+}
+
+.nav-item {
+    -fx-background-color: transparent;
+    -fx-background-radius: 6;
+    -fx-padding: 8 14 8 12;
+    -fx-cursor: hand;
+}
+
+.nav-item:hover {
+    -fx-background-color: -md-state-hover;
+}
+
+.nav-item.active {
+    -fx-background-color: -md-primary-container;
+}
+
+.nav-label {
+    -fx-text-fill: -md-on-surface-variant;
+    -fx-font-size: 13px;
+}
+
+.nav-icon {
+    -fx-fill: -md-muted;
+}
+
+.nav-item:hover .nav-label {
+    -fx-text-fill: -md-on-surface;
+}
+
+.nav-item.active .nav-label {
+    -fx-text-fill: -md-on-primary-container;
+    -fx-font-weight: bold;
+}
+
+.nav-item.active .nav-icon {
+    -fx-fill: -md-primary;
+}
+
+.top-divider {
+    -fx-background-color: -md-line;
+    -fx-min-width: 1;
+    -fx-max-width: 1;
+    -fx-min-height: 24;
+    -fx-max-height: 24;
+}
+
+.account-chip {
+    -fx-background-color: transparent;
+    -fx-background-radius: 8;
+    -fx-padding: 5 12 5 6;
+    -fx-cursor: hand;
+}
+
+.account-chip:hover {
+    -fx-background-color: -md-state-hover;
+}
+
+.account-chip.active {
+    -fx-background-color: -md-primary-container;
+}
+
+.user-name {
+    -fx-text-fill: -md-on-surface;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+.user-sub {
+    -fx-text-fill: -md-faint;
+    -fx-font-size: 10px;
+}
+
+.window-btn {
+    -fx-background-color: transparent;
+    -fx-background-radius: 6;
+    -fx-padding: 8 12 8 12;
+    -fx-cursor: hand;
+}
+
+.window-btn:hover {
+    -fx-background-color: -md-state-hover;
+}
+
+.window-btn .icon {
+    -fx-fill: -md-on-surface-variant;
+}
+
+.window-btn:hover .icon {
+    -fx-fill: -md-on-surface;
+}
+
+.window-close:hover {
+    -fx-background-color: -md-error-container;
+}
+
+.window-close:hover .icon {
+    -fx-fill: -md-on-error-container;
+}
+
+/* --------------------------------------------------------- pixel decorations */
+
+.pixel-avatar {
+    -fx-background-color: -md-slot-dark;
+    -fx-background-radius: 3;
+    -fx-padding: 2;
+}
+
+/* Inventory slot: dark top-left edge, light bottom-right edge. */
+.mc-slot {
+    -fx-background-color: -md-glass-slot;
+    -fx-background-radius: 3;
+    -fx-border-color: -md-slot-dark -md-slot-light -md-slot-light -md-slot-dark;
+    -fx-border-width: 2;
+    -fx-border-radius: 3;
+}
+
+.slot-label {
+    -fx-text-fill: -md-primary;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+.slot-icon {
+    -fx-fill: -md-primary;
+}
+
+.heading-bullet {
+    -fx-background-color: -md-primary;
+    -fx-border-color: -md-primary-bright -md-primary-container -md-primary-container -md-primary-bright;
+    -fx-border-width: 1.5;
+    -fx-min-width: 10;
+    -fx-max-width: 10;
+    -fx-min-height: 10;
+    -fx-max-height: 10;
+}
+
+/* -------------------------------------------------------------------- pages */
+
+.content-host {
+    -fx-background-color: transparent;
+}
+
+.page-scroll,
+.page-scroll > .viewport {
+    -fx-background-color: transparent;
+}
+
+.page-scroll {
+    -fx-padding: 0;
+    -fx-background-insets: 0;
+}
+
+.page {
+    -fx-padding: 26 32 32 32;
+    -fx-max-width: 1240;
+}
+
+.page-title {
+    -fx-text-fill: -md-on-surface;
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, -md-text-shadow, 10, 0.25, 0, 1);
+}
+
+.page-sub,
+.subtitle {
+    -fx-text-fill: -md-on-surface-variant;
+    -fx-font-size: 12.5px;
+    -fx-effect: dropshadow(gaussian, -md-text-shadow, 8, 0.2, 0, 1);
+}
+
+.section-title {
+    -fx-text-fill: -md-on-surface;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+}
+
+.muted {
+    -fx-text-fill: -md-on-surface-variant;
+}
+
+.tiny {
+    -fx-text-fill: -md-faint;
+    -fx-font-size: 11px;
+}
+
+.gold {
+    -fx-text-fill: -md-warning;
+}
+
+.green {
+    -fx-text-fill: -md-success;
+}
+
+.danger-text {
+    -fx-text-fill: -md-error;
+}
+
+.value-text {
+    -fx-text-fill: -md-on-surface;
+    -fx-font-size: 12.5px;
+}
+
+.instance-title {
+    -fx-text-fill: -md-on-surface;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+}
+
+.card {
+    -fx-background-color: -md-glass-card;
+    -fx-background-radius: 10;
+    -fx-border-color: -md-line;
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+    -fx-padding: 20;
+}
+
+.card-flat {
+    -fx-background-color: -md-glass-flat;
+    -fx-background-radius: 8;
+    -fx-border-color: -md-line;
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-padding: 16;
+}
+
+.card-hover:hover {
+    -fx-background-color: -md-glass-card-hover;
+    -fx-border-color: -md-primary-a30;
+}
+
+.card-selected {
+    -fx-border-color: -md-primary-a50;
+}
+
+.glass {
+    -fx-background-color: -md-glass-card;
+    -fx-background-radius: 10;
+    -fx-border-color: -md-line-strong;
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+    -fx-padding: 14;
+}
+
+/* ------------------------------------------------------------------- home */
+
+.home-greeting {
+    -fx-text-fill: -md-on-surface;
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, -md-text-shadow, 12, 0.3, 0, 1);
+}
+
+.step-row {
+    -fx-background-color: -md-glass-flat;
+    -fx-background-radius: 8;
+    -fx-padding: 10 12 10 10;
+}
+
+.step-row.done {
+    -fx-background-color: transparent;
+}
+
+.step-title {
+    -fx-text-fill: -md-on-surface;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+.step-row.done .step-title {
+    -fx-text-fill: -md-muted;
+}
+
+.step-index {
+    -fx-text-fill: -md-primary;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+.quick-tile {
+    -fx-background-color: -md-glass-flat;
+    -fx-background-radius: 8;
+    -fx-border-color: transparent;
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-padding: 12;
+    -fx-cursor: hand;
+}
+
+.quick-tile:hover {
+    -fx-background-color: -md-primary-a10;
+    -fx-border-color: -md-primary-a30;
+}
+
+.quick-title {
+    -fx-text-fill: -md-on-surface;
+    -fx-font-size: 12.5px;
+    -fx-font-weight: bold;
+}
+
+.launch-panel {
+    -fx-background-color: -md-glass-card;
+    -fx-background-radius: 10;
+    -fx-border-color: -md-line;
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+    -fx-padding: 16 18 16 18;
+}
+
+/* Hotbar, as in the game: a dark strip of slots with a bright frame on the
+   selected one. Number keys 1–9 select a slot. */
+.hotbar {
+    -fx-background-color: -md-slot-dark;
+    -fx-background-radius: 3;
+    -fx-border-color: -md-scrim;
+    -fx-border-width: 2;
+    -fx-border-radius: 3;
+    -fx-padding: 2;
+    -fx-spacing: 2;
+}
+
+.hotbar-slot {
+    -fx-background-color: -md-glass-slot;
+    -fx-border-color: -md-slot-dark -md-slot-light -md-slot-light -md-slot-dark;
+    -fx-border-width: 2;
+    -fx-cursor: hand;
+}
+
+.hotbar-slot:hover {
+    -fx-background-color: -md-state-press;
+}
+
+.hotbar-slot.selected {
+    -fx-border-color: -md-on-surface;
+    -fx-border-width: 3;
+    -fx-background-color: -md-primary-a18;
+}
+
+.hotbar-slot.empty {
+    -fx-cursor: default;
+}
+
+.hotbar-add .icon {
+    -fx-fill: -md-muted;
+}
+
+.hotbar-slot.hotbar-add:hover .icon {
+    -fx-fill: -md-primary;
+}
+
+.hotbar-count {
+    -fx-text-fill: -md-on-surface;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(one-pass-box, -md-scrim, 0, 1, 1, 1);
+}
+
+.hotbar-key {
+    -fx-text-fill: -md-faint;
+    -fx-font-size: 9px;
+}
+
+.item-name {
+    -fx-text-fill: -md-on-surface;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+/* ------------------------------------------------------------------ buttons */
+
+/* Raised Minecraft button: dark outer edge, light top-left and shaded
+   bottom-right bevel. Pressing swaps the bevel so it looks pushed in. */
+.btn {
+    -fx-background-color: -md-btn-edge, -md-btn-face;
+    -fx-background-insets: 0, 1;
+    -fx-background-radius: 4, 3;
+    -fx-border-color: -md-btn-light -md-btn-shade -md-btn-shade -md-btn-light;
+    -fx-border-width: 2;
+    -fx-border-insets: 1;
+    -fx-border-radius: 3;
+    -fx-text-fill: -md-on-surface;
+    -fx-padding: 8 16 8 16;
+    -fx-font-size: 12.5px;
+    -fx-cursor: hand;
+}
+
+.btn:hover {
+    -fx-background-color: -md-btn-edge, -md-btn-hover;
+}
+
+.btn:pressed {
+    -fx-background-color: -md-btn-edge, -md-btn-pressed;
+    -fx-border-color: -md-btn-shade -md-btn-light -md-btn-light -md-btn-shade;
+}
+
+.btn:disabled {
+    -fx-opacity: 0.5;
+}
+
+.btn .icon {
+    -fx-fill: -md-on-surface;
+}
+
+.btn-primary {
+    -fx-background-color: -md-btn-primary-edge, -md-btn-primary-face;
+    -fx-border-color: -md-btn-primary-light -md-btn-primary-shade -md-btn-primary-shade -md-btn-primary-light;
+    -fx-text-fill: -md-btn-primary-text;
+    -fx-font-weight: bold;
+}
+
+.btn-primary:hover {
+    -fx-background-color: -md-btn-primary-edge, -md-btn-primary-hover;
+}
+
+.btn-primary:pressed {
+    -fx-background-color: -md-btn-primary-edge, -md-btn-primary-pressed;
+    -fx-border-color: -md-btn-primary-shade -md-btn-primary-light -md-btn-primary-light -md-btn-primary-shade;
+}
+
+.btn-primary .icon {
+    -fx-fill: -md-btn-primary-text;
+}
+
+/* Kept for old callers: same as primary, colours follow the theme. */
+.btn-gold {
+    -fx-background-color: -md-btn-edge, -md-tertiary-container;
+    -fx-border-color: -md-tertiary -md-on-tertiary -md-on-tertiary -md-tertiary;
+    -fx-text-fill: -md-on-tertiary-container;
+    -fx-font-weight: bold;
+}
+
+.btn-gold .icon {
+    -fx-fill: -md-on-tertiary-container;
+}
+
+/* Flat secondary action: no bevel, just an outline. */
+.btn-ghost {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-background-radius: 6;
+    -fx-border-color: -md-line-strong;
+    -fx-border-width: 1;
+    -fx-border-insets: 0;
+    -fx-border-radius: 6;
+    -fx-text-fill: -md-on-surface;
+}
+
+.btn-ghost:hover {
+    -fx-background-color: -md-state-hover;
+    -fx-border-color: -md-outline;
+}
+
+.btn-ghost:pressed {
+    -fx-background-color: -md-state-press;
+    -fx-border-color: -md-outline;
+}
+
+.btn-danger {
+    -fx-background-color: -md-btn-edge, -md-error-container;
+    -fx-border-color: -md-error-a50 -md-btn-edge -md-btn-edge -md-error-a50;
+    -fx-text-fill: -md-on-error-container;
+}
+
+.btn-danger:hover {
+    -fx-background-color: -md-btn-edge, derive(-md-error-container, 12%);
+}
+
+.btn-danger .icon {
+    -fx-fill: -md-on-error-container;
+}
+
+.btn-text {
+    -fx-background-color: transparent;
+    -fx-text-fill: -md-primary;
+    -fx-padding: 3 5 3 5;
+    -fx-cursor: hand;
+    -fx-font-size: 12px;
+}
+
+.btn-text:hover {
+    -fx-text-fill: -md-primary-bright;
+    -fx-underline: true;
+}
+
+.btn-text .icon {
+    -fx-fill: -md-primary;
+}
+
+.btn-text:hover .icon {
+    -fx-fill: -md-primary-bright;
+}
+
+.btn-mini {
+    -fx-padding: 4 10 4 10;
+    -fx-font-size: 11px;
+}
+
+.icon-btn {
+    -fx-background-color: transparent;
+    -fx-background-radius: 6;
+    -fx-padding: 7;
+    -fx-cursor: hand;
+}
+
+.icon-btn:hover {
+    -fx-background-color: -md-state-hover;
+}
+
+.icon-btn .icon {
+    -fx-fill: -md-on-surface-variant;
+}
+
+.icon-btn:hover .icon {
+    -fx-fill: -md-on-surface;
+}
+
+.icon-btn-danger .icon {
+    -fx-fill: -md-error;
+}
+
+.icon-btn-danger:hover {
+    -fx-background-color: -md-error-a18;
+}
+
+.icon-btn-danger:hover .icon {
+    -fx-fill: -md-error;
+}
+
+.play-btn {
+    -fx-background-color: -md-btn-primary-edge, -md-btn-primary-face;
+    -fx-background-insets: 0, 1;
+    -fx-background-radius: 4, 3;
+    -fx-border-color: -md-btn-primary-light -md-btn-primary-shade -md-btn-primary-shade -md-btn-primary-light;
+    -fx-border-width: 3;
+    -fx-border-insets: 1;
+    -fx-border-radius: 3;
+    -fx-text-fill: -md-btn-primary-text;
+    -fx-font-size: 17px;
+    -fx-font-weight: bold;
+    -fx-padding: 13 34 13 30;
+    -fx-cursor: hand;
+    -fx-graphic-text-gap: 10;
+}
+
+.play-btn:hover {
+    -fx-background-color: -md-btn-primary-edge, -md-btn-primary-hover;
+}
+
+.play-btn:pressed {
+    -fx-background-color: -md-btn-primary-edge, -md-btn-primary-pressed;
+    -fx-border-color: -md-btn-primary-shade -md-btn-primary-light -md-btn-primary-light -md-btn-primary-shade;
+}
+
+.play-btn:disabled {
+    -fx-opacity: 0.55;
+}
+
+.play-btn .icon {
+    -fx-fill: -md-btn-primary-text;
+}
+
+.menu-button.btn > .label {
+    -fx-text-fill: -md-on-surface;
+    -fx-font-size: 12.5px;
+}
+
+.menu-button.btn > .arrow-button {
+    -fx-background-color: transparent;
+    -fx-padding: 0 3 0 6;
+}
+
+.menu-button.btn > .arrow-button > .arrow {
+    -fx-background-color: -md-on-surface;
+    -fx-padding: 2.5;
+}
+
+.more-button {
+    -fx-background-color: transparent;
+    -fx-background-radius: 6;
+    -fx-text-fill: -md-on-surface-variant;
+    -fx-font-size: 17px;
+    -fx-padding: 4 9 6 9;
+    -fx-cursor: hand;
+}
+
+.more-button:hover {
+    -fx-background-color: -md-state-hover;
+}
+
+.more-button > .arrow-button {
+    -fx-padding: 0 0 0 2;
+}
+
+.more-button > .arrow-button > .arrow {
+    -fx-background-color: -md-faint;
+    -fx-padding: 2.5;
+}
+
+/* -------------------------------------------------------------------- chips */
+
+.chip {
+    -fx-background-color: -md-primary-a18;
+    -fx-text-fill: -md-primary;
+    -fx-background-radius: 4;
+    -fx-padding: 2 8 2 8;
+    -fx-font-size: 10.5px;
+}
+
+.chip-gold {
+    -fx-background-color: -md-warning-a18;
+    -fx-text-fill: -md-warning;
+}
+
+.chip-green {
+    -fx-background-color: -md-success-a18;
+    -fx-text-fill: -md-success;
+}
+
+.chip-muted {
+    -fx-background-color: -md-state-hover;
+    -fx-text-fill: -md-on-surface-variant;
+}
+
+.chip-danger {
+    -fx-background-color: -md-error-a18;
+    -fx-text-fill: -md-error;
+}
+
+.chip-tertiary {
+    -fx-background-color: -md-tertiary-a18;
+    -fx-text-fill: -md-tertiary;
+}
+
+/* -------------------------------------------------------------------- forms */
+
+.form-label {
+    -fx-text-fill: -md-on-surface;
+    -fx-font-size: 12px;
+}
+
+.field-hint {
+    -fx-text-fill: -md-faint;
+    -fx-font-size: 10.5px;
+}
+
+/* Text inputs are sunk into the surface like an inventory slot. */
+.text-field,
+.password-field {
+    -fx-background-color: -md-glass-field;
+    -fx-text-fill: -md-on-surface;
+    -fx-prompt-text-fill: -md-faint;
+    -fx-background-radius: 4;
+    -fx-border-radius: 4;
+    -fx-border-color: -md-slot-dark -md-slot-light -md-slot-light -md-slot-dark;
+    -fx-border-width: 1.5;
+    -fx-padding: 9 11 9 11;
+    -fx-font-size: 12.5px;
+    -fx-highlight-fill: -md-primary-a50;
+    -fx-highlight-text-fill: -md-on-surface;
+}
+
+.text-field:focused,
+.password-field:focused {
+    -fx-border-color: -md-primary;
+}
+
+.text-area {
+    -fx-background-color: transparent;
+    -fx-control-inner-background: transparent;
+    -fx-text-fill: -md-on-surface;
+    -fx-prompt-text-fill: -md-faint;
+    -fx-highlight-fill: -md-primary-a50;
+    -fx-highlight-text-fill: -md-on-surface;
+}
+
+.text-area .scroll-pane,
+.text-area .scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+.text-area .content {
+    -fx-background-color: -md-glass-field;
+    -fx-background-radius: 6;
+    -fx-border-color: -md-line;
+    -fx-border-radius: 6;
+}
+
+.text-area:focused .content {
+    -fx-border-color: -md-primary;
+}
+
+.detail-area,
+.console-area {
+    -fx-control-inner-background: -md-surface-lowest;
+    -fx-text-fill: -md-on-surface-variant;
+    -fx-background-color: transparent;
+}
+
+.detail-area .content,
+.console-area .content {
+    -fx-background-color: -md-surface-lowest;
+}
+
+.combo-box {
+    -fx-background-color: -md-glass-field;
+    -fx-background-radius: 4;
+    -fx-border-radius: 4;
+    -fx-border-color: -md-slot-dark -md-slot-light -md-slot-light -md-slot-dark;
+    -fx-border-width: 1.5;
+    -fx-padding: 2 4 2 4;
+    -fx-cursor: hand;
+}
+
+.combo-box:hover {
+    -fx-border-color: -md-primary-a50;
+}
+
+.combo-box .list-cell {
+    -fx-text-fill: -md-on-surface;
+    -fx-background-color: transparent;
+    -fx-padding: 6 8 6 8;
+}
+
+.combo-box .arrow {
+    -fx-background-color: -md-muted;
+}
+
+.combo-box .arrow-button {
+    -fx-background-color: transparent;
+}
+
+.combo-box-popup .list-view {
+    -fx-background-color: -md-surface-high;
+    -fx-border-color: -md-line-strong;
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+    -fx-effect: dropshadow(gaussian, -md-shadow, 18, 0.2, 0, 6);
+}
+
+.combo-box-popup .list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: -md-on-surface;
+    -fx-padding: 8 12 8 12;
+}
+
+.combo-box-popup .list-cell:hover,
+.combo-box-popup .list-cell:filled:selected {
+    -fx-background-color: -md-primary-a18;
+}
+
+/* Minecraft-like slider: thin dark track, raised rectangular handle. */
+.slider .track {
+    -fx-background-color: -md-slot-dark, -md-surface-variant;
+    -fx-background-insets: 0, 1;
+    -fx-background-radius: 2;
+    -fx-pref-height: 6;
+}
+
+.slider .thumb {
+    -fx-background-color: -md-btn-primary-edge, -md-btn-primary-face;
+    -fx-background-insets: 0, 1;
+    -fx-background-radius: 2;
+    -fx-border-color: -md-btn-primary-light -md-btn-primary-shade -md-btn-primary-shade -md-btn-primary-light;
+    -fx-border-width: 2;
+    -fx-border-insets: 1;
+    -fx-padding: 9 5 9 5;
+}
+
+.slider .thumb:hover {
+    -fx-background-color: -md-btn-primary-edge, -md-btn-primary-hover;
+}
+
+.slider:disabled {
+    -fx-opacity: 0.45;
+}
+
+.check-box {
+    -fx-text-fill: -md-on-surface;
+    -fx-font-size: 12px;
+}
+
+.check-box .box {
+    -fx-background-color: -md-glass-field;
+    -fx-border-color: -md-slot-dark -md-slot-light -md-slot-light -md-slot-dark;
+    -fx-border-width: 1.5;
+    -fx-border-radius: 2;
+    -fx-background-radius: 2;
+}
+
+.check-box:selected .box {
+    -fx-background-color: -md-primary;
+    -fx-border-color: -md-primary-bright -md-primary-container -md-primary-container -md-primary-bright;
+}
+
+.check-box:selected .mark {
+    -fx-background-color: -md-on-primary;
+}
+
+.radio-button {
+    -fx-text-fill: -md-on-surface;
+}
+
+.radio-button .radio {
+    -fx-background-color: -md-glass-field;
+    -fx-border-color: -md-outline;
+}
+
+.radio-button:selected .radio {
+    -fx-background-color: -md-primary;
+}
+
+.radio-button:selected .dot {
+    -fx-background-color: -md-on-primary;
+}
+
+.toggle-button {
+    -fx-background-color: -md-state-hover;
+    -fx-text-fill: -md-on-surface-variant;
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+    -fx-border-color: transparent;
+    -fx-padding: 7 13 7 13;
+    -fx-cursor: hand;
+    -fx-font-size: 11.5px;
+}
+
+.toggle-button:hover {
+    -fx-background-color: -md-state-press;
+    -fx-text-fill: -md-on-surface;
+}
+
+.toggle-button:selected {
+    -fx-background-color: -md-secondary-container;
+    -fx-text-fill: -md-on-secondary-container;
+    -fx-border-color: -md-primary-a30;
+}
+
+/* ------------------------------------------------------------------- lists */
+
+.list-view {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+    -fx-background-insets: 0;
+}
+
+.list-view .virtual-flow .scroll-bar:vertical {
+    -fx-background-color: transparent;
+}
+
+.list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: -md-on-surface;
+    -fx-padding: 0 2 0 0;
+}
+
+.list-cell:filled:hover {
+    -fx-background-color: transparent;
+}
+
+.version-cell {
+    -fx-background-color: -md-glass-flat;
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+    -fx-border-color: -md-line;
+    -fx-padding: 9 11 9 11;
+    -fx-cursor: hand;
+}
+
+.list-cell:filled:hover .version-cell {
+    -fx-background-color: -md-state-press;
+}
+
+.list-cell:filled:selected .version-cell {
+    -fx-background-color: -md-primary-a18;
+    -fx-border-color: -md-primary-a50;
+}
+
+.version-cell-name {
+    -fx-text-fill: -md-on-surface;
+    -fx-font-size: 12.5px;
+    -fx-font-weight: bold;
+}
+
+.version-cell-meta {
+    -fx-text-fill: -md-faint;
+    -fx-font-size: 10.5px;
+}
+
+/* ------------------------------------------------------------- file manager */
+
+.instance-bar {
+    -fx-background-color: -md-glass-card;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-color: -md-line;
+    -fx-border-width: 1;
+    -fx-padding: 8 12 8 14;
+}
+
+.instance-picker {
+    -fx-font-size: 12px;
+}
+
+.tab-button {
+    -fx-background-color: -md-glass-flat;
+    -fx-border-color: -md-line;
+    -fx-border-width: 1;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-text-fill: -md-on-surface-variant;
+    -fx-padding: 7 14 7 14;
+    -fx-font-size: 12px;
+    -fx-cursor: hand;
+}
+
+.tab-button:hover {
+    -fx-background-color: -md-state-press;
+    -fx-text-fill: -md-on-surface;
+}
+
+.tab-button.active,
+.tab-button:selected {
+    -fx-background-color: -md-secondary-container;
+    -fx-border-color: -md-primary-a30;
+    -fx-text-fill: -md-on-secondary-container;
+    -fx-font-weight: bold;
+}
+
+.file-card.drop-active {
+    -fx-border-color: -md-primary;
+    -fx-border-width: 2;
+    -fx-background-color: -md-glass-card-hover;
+}
+
+.file-row {
+    -fx-background-color: -md-glass-flat;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-color: -md-line;
+    -fx-border-width: 1;
+}
+
+.file-row:hover {
+    -fx-background-color: -md-state-press;
+    -fx-border-color: -md-primary-a30;
+}
+
+.file-name {
+    -fx-text-fill: -md-on-surface;
+    -fx-font-size: 12.5px;
+    -fx-font-weight: bold;
+}
+
+.file-name-disabled {
+    -fx-text-fill: -md-faint;
+}
+
+.file-meta,
+.file-path {
+    -fx-text-fill: -md-faint;
+    -fx-font-size: 10.5px;
+}
+
+.file-tile-label {
+    -fx-font-size: 9.5px;
+    -fx-font-weight: bold;
+}
+
+.file-tile.saves .slot-label,
+.file-tile.resourcepacks .slot-label {
+    -fx-text-fill: -md-primary;
+}
+
+.file-tile.mods .slot-label {
+    -fx-text-fill: -md-tertiary;
+}
+
+.file-tile.shaderpacks .slot-label {
+    -fx-text-fill: -md-secondary;
+}
+
+/* ------------------------------------------------------------------ menus */
+
+.context-menu {
+    -fx-background-color: -md-surface-high;
+    -fx-background-radius: 8;
+    -fx-border-color: -md-line-strong;
+    -fx-border-radius: 8;
+    -fx-padding: 5;
+    -fx-effect: dropshadow(gaussian, -md-shadow, 20, 0.2, 0, 6);
+}
+
+.menu-item {
+    -fx-background-color: transparent;
+    -fx-background-radius: 5;
+    -fx-padding: 7 16 7 16;
+}
+
+.menu-item .label {
+    -fx-text-fill: -md-on-surface;
+    -fx-font-size: 12px;
+}
+
+.menu-item:focused {
+    -fx-background-color: -md-primary-a18;
+}
+
+.menu-item:focused .label {
+    -fx-text-fill: -md-on-surface;
+}
+
+/* --------------------------------------------------------------- scrollbar */
+
+.scroll-bar:vertical,
+.scroll-bar:horizontal {
+    -fx-background-color: transparent;
+    -fx-pref-width: 9;
+    -fx-pref-height: 9;
+}
+
+.scroll-bar .track {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: -md-line-strong;
+    -fx-background-radius: 2;
+}
+
+.scroll-bar .thumb:hover {
+    -fx-background-color: -md-outline;
+}
+
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+.scroll-bar .increment-arrow,
+.scroll-bar .decrement-arrow {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+/* ---------------------------------------------------------------- progress */
+
+/* Experience-bar style: dark framed track, flat bright fill. */
+.progress-bar {
+    -fx-pref-height: 8;
+}
+
+.progress-bar > .bar {
+    -fx-background-color: -md-primary;
+    -fx-background-radius: 1;
+    -fx-background-insets: 1;
+}
+
+.progress-bar > .track {
+    -fx-background-color: -md-scrim, -md-surface-variant;
+    -fx-background-radius: 2, 1;
+    -fx-background-insets: 0, 1;
+}
+
+.progress-indicator {
+    -fx-progress-color: -md-primary;
+}
+
+/* ------------------------------------------------------------------ images */
+
+.image-card {
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+}
+
+.image-caption {
+    -fx-background-color: -md-glass-bar;
+    -fx-padding: 8 12 8 12;
+}
+
+.image-caption-title {
+    -fx-text-fill: -md-on-surface;
+    -fx-font-size: 12.5px;
+    -fx-font-weight: bold;
+}
+
+.image-caption-sub {
+    -fx-text-fill: -md-on-surface-variant;
+    -fx-font-size: 10.5px;
+}
+
+/* ------------------------------------------------------------- appearance */
+
+.bg-thumb {
+    -fx-background-color: -md-slot-dark;
+    -fx-background-radius: 6;
+    -fx-border-color: transparent;
+    -fx-border-width: 2;
+    -fx-border-radius: 6;
+    -fx-padding: 2;
+    -fx-cursor: hand;
+}
+
+.bg-thumb:hover {
+    -fx-border-color: -md-outline;
+}
+
+.bg-thumb.selected {
+    -fx-border-color: -md-primary;
+}
+
+.bg-thumb-add {
+    -fx-background-color: -md-glass-flat;
+    -fx-border-color: -md-line-strong;
+    -fx-border-style: segments(6, 4);
+}
+
+.bg-thumb-add .icon {
+    -fx-fill: -md-muted;
+}
+
+.bg-thumb-add:hover .icon {
+    -fx-fill: -md-primary;
+}
+
+.bg-thumb-badge {
+    -fx-background-color: -md-primary;
+    -fx-background-radius: 3;
+    -fx-text-fill: -md-on-primary;
+    -fx-font-size: 9.5px;
+    -fx-font-weight: bold;
+    -fx-padding: 1 5 1 5;
+}
+
+.swatch {
+    -fx-background-radius: 4;
+    -fx-border-color: -md-line-strong;
+    -fx-border-radius: 4;
+    -fx-min-width: 30;
+    -fx-min-height: 30;
+    -fx-max-width: 30;
+    -fx-max-height: 30;
+}
+
+/* ------------------------------------------------------------------- modal */
+
+.modal-dim {
+    -fx-background-color: -md-scrim;
+    -fx-opacity: 0.62;
+}
+
+.modal-card {
+    -fx-background-color: -md-surface-container;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-border-color: -md-line-strong;
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, -md-shadow, 36, 0.2, 0, 12);
+    -fx-padding: 24;
+}
+
+.modal-title {
+    -fx-text-fill: -md-on-surface;
+    -fx-font-size: 19px;
+    -fx-font-weight: bold;
+}
+
+.modal-close {
+    -fx-background-color: -md-state-hover;
+    -fx-background-radius: 6;
+    -fx-padding: 6;
+    -fx-cursor: hand;
+}
+
+.modal-close:hover {
+    -fx-background-color: -md-state-press;
+}
+
+.modal-close .icon {
+    -fx-fill: -md-on-surface-variant;
+}
+
+.modal-scroll {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+
+.modal-scroll > .viewport {
+    -fx-background-color: transparent;
+}
+
+.login-code {
+    -fx-text-fill: -md-on-surface;
+    -fx-font-size: 30px;
+    -fx-font-weight: bold;
+}
+
+/* -------------------------------------------------------------- drag & drop */
+
+.drop-overlay {
+    -fx-background-color: -md-glass-bar;
+    -fx-background-radius: 10;
+}
+
+.drop-card {
+    -fx-background-color: -md-surface-container;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-border-color: -md-primary;
+    -fx-border-width: 2;
+    -fx-border-style: segments(10, 7);
+    -fx-padding: 28 44 28 44;
+    -fx-effect: dropshadow(gaussian, -md-shadow, 36, 0.2, 0, 12);
+}
+
+.drop-title {
+    -fx-text-fill: -md-on-surface;
+    -fx-font-size: 19px;
+    -fx-font-weight: bold;
+}
+
+.drop-url {
+    -fx-text-fill: -md-primary;
+    -fx-font-size: 12px;
+}
+
+.drop-recognized {
+    -fx-text-fill: -md-success;
+    -fx-font-size: 11.5px;
+}
+
+/* ------------------------------------------------------------------- toast */
+
+.toast {
+    -fx-background-color: -md-surface-highest;
+    -fx-background-radius: 8;
+    -fx-border-color: -md-line-strong;
+    -fx-border-radius: 8;
+    -fx-padding: 10 18 10 18;
+    -fx-text-fill: -md-on-surface;
+    -fx-font-size: 12.5px;
+    -fx-effect: dropshadow(gaussian, -md-shadow, 18, 0.2, 0, 6);
+}
+
+.toast-error {
+    -fx-border-color: -md-error;
+}
+
+.toast-success {
+    -fx-border-color: -md-success;
+}
+
+/* --------------------------------------------------------------- misc bits */
+
+.separator-line {
+    -fx-background-color: -md-line;
+    -fx-min-height: 1;
+    -fx-max-height: 1;
+}
+
+.dot {
+    -fx-background-radius: 1;
+    -fx-min-width: 7;
+    -fx-min-height: 7;
+    -fx-max-width: 7;
+    -fx-max-height: 7;
+}
+
+.dot-online {
+    -fx-background-color: -md-success;
+}
+
+.dot-idle {
+    -fx-background-color: -md-outline;
+}
+
+.link {
+    -fx-text-fill: -md-primary;
+    -fx-cursor: hand;
+}
+
+.link:hover {
+    -fx-underline: true;
+}
+
+.mono {
+    -fx-font-family: "Cascadia Mono", "Consolas", "JetBrains Mono", monospace;
+    -fx-font-size: 11.5px;
+}
+
+.path-text {
+    -fx-text-fill: -md-on-surface-variant;
+}
+
+.notice {
+    -fx-background-color: -md-warning-a10;
+    -fx-border-color: -md-warning-a30;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 11 13 11 13;
+}
+
+.notice-text {
+    -fx-text-fill: -md-on-surface-variant;
+    -fx-font-size: 11.5px;
+}
+
+.notice .notice-text {
+    -fx-text-fill: -md-warning;
+}
+
+.notice-blue {
+    -fx-background-color: -md-primary-a10;
+    -fx-border-color: -md-primary-a30;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 11 13 11 13;
+}
+
+.notice-info-text {
+    -fx-text-fill: -md-primary;
+    -fx-font-size: 11.5px;
+}
+
+.warning-text {
+    -fx-text-fill: -md-warning;
+}
+
+.tooltip {
+    -fx-background-color: -md-surface-highest;
+    -fx-text-fill: -md-on-surface;
+    -fx-background-radius: 5;
+    -fx-border-color: -md-line-strong;
+    -fx-border-radius: 5;
+    -fx-font-size: 11px;
+    -fx-padding: 6 9 6 9;
+}
+
+.console-root {
+    -fx-background-color: -md-surface;
+    -fx-padding: 16;
+}
+
+/* ---------------------------------------------------------- resource browser */
+
+.resource-card {
+    -fx-background-radius: 10;
+}
+
+.resource-title {
+    -fx-text-fill: -md-on-surface;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.resource-desc {
+    -fx-text-fill: -md-on-surface-variant;
+    -fx-font-size: 11.5px;
+}
+
+.resource-tile {
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+    -fx-border-width: 2;
+}
+
+.resource-tile-label {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+.resource-state-icon {
+    -fx-background-color: -md-glass-slot;
+    -fx-background-radius: 3;
+    -fx-border-color: -md-slot-dark -md-slot-light -md-slot-light -md-slot-dark;
+    -fx-border-width: 2;
+    -fx-border-radius: 3;
+}
+
+.resource-version-title {
+    -fx-text-fill: -md-on-surface;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.resource-version-details {
+    -fx-padding: 2 0 0 0;
+}
+
+.resource-deps {
+    -fx-background-color: -md-glass-flat;
+    -fx-background-radius: 8;
+    -fx-border-color: -md-line;
+    -fx-border-radius: 8;
+    -fx-padding: 9 11 9 11;
+}
+
+.resource-version-list {
+    -fx-background-color: -md-glass-slot;
+    -fx-background-radius: 8;
+    -fx-border-color: -md-line;
+    -fx-border-radius: 8;
+    -fx-padding: 4;
+}
+
+.resource-version-list .list-cell {
+    -fx-padding: 2 4 2 0;
+}
+
+.resource-progress {
+    -fx-pref-height: 6;
+}
+
+/* ------------------------------------------------------------- multiplayer */
+
+.member-row {
+    -fx-background-color: -md-glass-flat;
+    -fx-background-radius: 8;
+    -fx-padding: 8 12 8 10;
+}
+
+.room-code {
+    -fx-text-fill: -md-on-surface;
+    -fx-font-size: 17px;
+}
+
+/* ------------------------------------------------------------ icon roles */
+
+.icon-primary { -fx-fill: -md-primary; }
+.icon-tertiary { -fx-fill: -md-tertiary; }
+.icon-muted { -fx-fill: -md-muted; }
+.icon-success { -fx-fill: -md-success; }
+.icon-warning { -fx-fill: -md-warning; }
+.icon-error { -fx-fill: -md-error; }
+
+.resource-tile.tile-primary {
+    -fx-background-color: -md-primary-container;
+    -fx-border-color: -md-primary-a30;
+}
+
+.resource-tile.tile-primary .resource-tile-label {
+    -fx-text-fill: -md-on-primary-container;
+}
+
+.resource-tile.tile-tertiary {
+    -fx-background-color: -md-tertiary-container;
+    -fx-border-color: -md-tertiary-a30;
+}
+
+.resource-tile.tile-tertiary .resource-tile-label {
+    -fx-text-fill: -md-on-tertiary-container;
+}
+
+.resource-tile.tile-secondary {
+    -fx-background-color: -md-secondary-container;
+    -fx-border-color: -md-secondary-a30;
+}
+
+.resource-tile.tile-secondary .resource-tile-label {
+    -fx-text-fill: -md-on-secondary-container;
+}
+
+.more-button > .label {
+    -fx-text-fill: -md-on-surface-variant;
+    -fx-font-size: 16px;
+}
+
+.more-button:hover > .label {
+    -fx-text-fill: -md-on-surface;
+}
+
+/* ---------------------------------------------------------------- skin editor */
+
+/* The preview is an inventory-like panel with the skin standing inside it. */
+.skin-preview {
+    -fx-background-color: -md-glass-field;
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+    -fx-border-color: -md-slot-dark -md-slot-light -md-slot-light -md-slot-dark;
+    -fx-border-width: 2;
+    -fx-padding: 12;
+}
+
+.skin-preview.skin-drop-active {
+    -fx-background-color: -md-primary-a10;
+    -fx-border-color: -md-primary;
+}
+
+.skin-file-name {
+    -fx-text-fill: -md-primary;
+    -fx-font-size: 11px;
+}
+
+/* ================================================================ AI 制作 */
+
+.ai-root,
+.ai-chat {
+    -fx-background-color: transparent;
+}
+
+.ai-page-head {
+    -fx-padding: 16 32 12 32;
+    -fx-border-color: transparent transparent -md-line transparent;
+    -fx-border-width: 0 0 1 0;
+}
+
+.ai-page-title {
+    -fx-text-fill: -md-on-surface;
+    -fx-font-size: 21px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, -md-text-shadow, 10, 0.25, 0, 1);
+}
+
+.ai-page-subtitle {
+    -fx-text-fill: -md-on-surface-variant;
+    -fx-font-size: 11.5px;
+}
+
+.ai-back {
+    -fx-background-color: -md-glass-flat;
+    -fx-background-radius: 6;
+    -fx-border-color: -md-line;
+    -fx-border-radius: 6;
+    -fx-border-width: 1;
+    -fx-padding: 7;
+    -fx-cursor: hand;
+}
+
+.ai-back:hover {
+    -fx-background-color: -md-state-hover;
+    -fx-border-color: -md-line-strong;
+}
+
+.ai-back .icon {
+    -fx-fill: -md-on-surface;
+}
+
+.ai-icon-button {
+    -fx-background-color: -md-state-hover;
+    -fx-background-radius: 6;
+    -fx-padding: 7;
+    -fx-cursor: hand;
+}
+
+.ai-icon-button:hover {
+    -fx-background-color: -md-state-press;
+}
+
+.ai-icon-button .icon {
+    -fx-fill: -md-on-surface-variant;
+}
+
+.ai-page-head .btn {
+    -fx-padding: 6 12 6 12;
+    -fx-font-size: 11.5px;
+}
+
+.ai-page-head .chip {
+    -fx-padding: 4 9 4 9;
+}
+
+.ai-root .page {
+    -fx-padding: 22 32 32 32;
+}
+
+.ai-key-banner {
+    -fx-background-color: -md-primary-a10;
+    -fx-border-color: -md-primary-a30;
+    -fx-border-radius: 9;
+    -fx-background-radius: 9;
+    -fx-padding: 13 16 13 16;
+}
+
+.ai-key-banner .icon {
+    -fx-fill: -md-warning;
+}
+
+.ai-banner-title {
+    -fx-text-fill: -md-on-surface;
+    -fx-font-size: 12.5px;
+    -fx-font-weight: bold;
+}
+
+/* ------------------------------------------------------------- chat shell */
+
+.ai-sidebar {
+    -fx-background-color: -md-glass-flat;
+    -fx-border-color: transparent -md-line transparent transparent;
+    -fx-border-width: 0 1 0 0;
+    -fx-padding: 14 10 12 12;
+}
+
+.ai-sidebar-title {
+    -fx-text-fill: -md-on-surface;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+.ai-sidebar-label {
+    -fx-text-fill: -md-faint;
+    -fx-font-size: 10px;
+}
+
+.ai-sidebar-footer {
+    -fx-border-color: -md-line transparent transparent transparent;
+    -fx-border-width: 1 0 0 0;
+    -fx-padding: 10 2 2 2;
+}
+
+.ai-session-scroll,
+.ai-session-scroll > .viewport,
+.ai-transcript,
+.ai-transcript > .viewport {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+
+.ai-session-item {
+    -fx-background-color: transparent;
+    -fx-background-radius: 6;
+    -fx-padding: 8 9 8 9;
+    -fx-cursor: hand;
+}
+
+.ai-session-item:hover {
+    -fx-background-color: -md-state-hover;
+}
+
+.ai-session-item.active {
+    -fx-background-color: -md-primary-a18;
+}
+
+.ai-session-title {
+    -fx-text-fill: -md-on-surface-variant;
+    -fx-font-size: 11.5px;
+}
+
+.ai-session-item.active .ai-session-title {
+    -fx-text-fill: -md-on-surface;
+    -fx-font-weight: bold;
+}
+
+.ai-session-meta {
+    -fx-text-fill: -md-faint;
+    -fx-font-size: 9.5px;
+}
+
+.ai-chat-head {
+    -fx-padding: 14 22 9 22;
+}
+
+.ai-chat-head .section-title {
+    -fx-font-size: 14px;
+}
+
+.ai-chat-head .tiny {
+    -fx-font-size: 10.5px;
+}
+
+.ai-transcript-content {
+    -fx-padding: 4 20 10 20;
+}
+
+/* ------------------------------------------------------------- transcript */
+
+.ai-empty-chat {
+    -fx-background-color: -md-glass-flat;
+    -fx-border-color: -md-line;
+    -fx-border-radius: 9;
+    -fx-background-radius: 9;
+    -fx-padding: 18 20 18 20;
+}
+
+.ai-empty-chat .icon {
+    -fx-fill: -md-primary;
+}
+
+.ai-msg-user {
+    -fx-background-color: -md-primary-container;
+    -fx-border-color: -md-primary-a30;
+    -fx-border-radius: 10 10 3 10;
+    -fx-background-radius: 10 10 3 10;
+    -fx-padding: 9 13 10 13;
+}
+
+.ai-msg-assistant {
+    -fx-background-color: -md-glass-card;
+    -fx-border-color: -md-line;
+    -fx-border-radius: 3 10 10 10;
+    -fx-background-radius: 3 10 10 10;
+    -fx-padding: 11 14 12 14;
+}
+
+.ai-msg-name {
+    -fx-text-fill: -md-faint;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+}
+
+.ai-msg-user .ai-msg-name {
+    -fx-text-fill: -md-on-primary-container;
+}
+
+.ai-msg-text {
+    -fx-text-fill: -md-on-surface;
+    -fx-font-size: 12.5px;
+}
+
+.ai-thinking {
+    -fx-background-color: -md-surface-lowest;
+    -fx-background-radius: 6;
+    -fx-border-color: -md-line;
+    -fx-border-radius: 6;
+    -fx-padding: 7 9 7 9;
+}
+
+.ai-thinking-toggle {
+    -fx-text-fill: -md-tertiary;
+    -fx-font-size: 10.5px;
+}
+
+.ai-thinking-body {
+    -fx-text-fill: -md-on-surface-variant;
+    -fx-font-size: 11px;
+}
+
+.ai-tool {
+    -fx-background-color: -md-glass-card;
+    -fx-border-color: -md-line;
+    -fx-border-radius: 7;
+    -fx-background-radius: 7;
+    -fx-padding: 8 10 8 10;
+}
+
+.ai-tool-name {
+    -fx-text-fill: -md-on-surface-variant;
+    -fx-font-size: 11.5px;
+    -fx-font-weight: bold;
+}
+
+.ai-tool-status {
+    -fx-text-fill: -md-faint;
+    -fx-font-size: 10px;
+}
+
+.ai-tool-args {
+    -fx-text-fill: -md-faint;
+    -fx-font-family: "Cascadia Mono", "Consolas", "JetBrains Mono", monospace;
+    -fx-font-size: 10px;
+}
+
+.ai-tool-result {
+    -fx-text-fill: -md-on-surface-variant;
+    -fx-font-family: "Cascadia Mono", "Consolas", "JetBrains Mono", monospace;
+    -fx-font-size: 10.5px;
+    -fx-background-color: -md-surface-lowest;
+    -fx-background-radius: 4;
+    -fx-padding: 6 8 6 8;
+}
+
+.ai-build {
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-padding: 11 13 11 13;
+}
+
+.ai-build-ok {
+    -fx-background-color: -md-glass-card, -md-success-a10;
+    -fx-border-color: -md-success-a30;
+}
+
+.ai-build-fail {
+    -fx-background-color: -md-glass-card, -md-error-a10;
+    -fx-border-color: -md-error-a30;
+}
+
+.ai-build-title {
+    -fx-text-fill: -md-success;
+    -fx-font-size: 12.5px;
+    -fx-font-weight: bold;
+}
+
+.ai-build-summary {
+    -fx-text-fill: -md-on-surface-variant;
+    -fx-font-size: 11.5px;
+}
+
+.ai-build-path {
+    -fx-text-fill: -md-on-surface-variant;
+    -fx-font-size: 10.5px;
+}
+
+.ai-error-line {
+    -fx-text-fill: -md-error;
+    -fx-font-size: 11.5px;
+    -fx-background-color: -md-error-a10;
+    -fx-background-radius: 6;
+    -fx-padding: 8 10 8 10;
+}
+
+/* ------------------------------------------------------------ runtime bar */
+
+.ai-runtime-banner {
+    -fx-background-color: -md-primary-a10;
+    -fx-border-color: -md-primary-a30;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 9 12 10 12;
+}
+
+.ai-runtime-banner.error {
+    -fx-background-color: -md-error-a10;
+    -fx-border-color: -md-error-a30;
+}
+
+.ai-runtime-banner .progress-bar {
+    -fx-pref-height: 5;
+}
+
+.ai-runtime-banner .btn {
+    -fx-padding: 4 10 4 10;
+    -fx-font-size: 10.5px;
+}
+
+.ai-operation {
+    -fx-background-color: -md-glass-card;
+    -fx-border-color: -md-tertiary-a30;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 9 12 10 12;
+}
+
+.ai-operation .progress-bar {
+    -fx-pref-height: 5;
+}
+
+.ai-operation .btn {
+    -fx-padding: 4 10 4 10;
+    -fx-font-size: 10.5px;
+}
+
+.ai-suggestion {
+    -fx-padding: 5 10 5 10;
+    -fx-font-size: 10.5px;
+}
+
+.ai-suggestion:hover {
+    -fx-border-color: -md-primary-a30;
+}
+
+/* --------------------------------------------------------------- composer */
+
+.ai-composer-wrap {
+    -fx-padding: 8 20 13 20;
+}
+
+.ai-composer {
+    -fx-background-color: -md-glass-flat;
+    -fx-border-color: -md-line-strong;
+    -fx-border-radius: 9;
+    -fx-background-radius: 9;
+    -fx-padding: 7 9 7 9;
+}
+
+.ai-composer-input {
+    -fx-background-color: transparent;
+    -fx-text-fill: -md-on-surface;
+    -fx-prompt-text-fill: -md-faint;
+    -fx-font-size: 12.5px;
+    -fx-border-color: transparent;
+    -fx-background-insets: 0;
+    -fx-padding: 2;
+}
+
+.ai-composer-input .content {
+    -fx-background-color: transparent;
+    -fx-background-radius: 0;
+    -fx-padding: 2;
+}
+
+.ai-composer-input .scroll-pane,
+.ai-composer-input .scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+.ai-composer-wrap .btn {
+    -fx-padding: 5 11 5 11;
+    -fx-font-size: 11px;
+}
+
+.ai-attachment-chip {
+    -fx-background-color: -md-primary-a10;
+    -fx-border-color: -md-primary-a30;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-padding: 2 7 2 6;
+}
+
+.ai-attachment-chip .icon {
+    -fx-fill: -md-primary;
+}
+
+.ai-attachment-name {
+    -fx-text-fill: -md-on-surface-variant;
+    -fx-font-size: 10.5px;
+}
+
+.ai-attachment-remove {
+    -fx-text-fill: -md-faint;
+    -fx-padding: 0 2 0 2;
+    -fx-font-size: 13px;
+}
+
+.ai-attachment-remove:hover {
+    -fx-text-fill: -md-error;
+    -fx-underline: false;
+}
+
+/* --------------------------------------------------------------- history */
+
+.ai-history-row {
+    -fx-background-color: -md-glass-flat;
+    -fx-border-color: -md-line;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 10 12 10 10;
+    -fx-cursor: hand;
+}
+
+.ai-history-row:hover {
+    -fx-background-color: -md-glass-card-hover;
+    -fx-border-color: -md-primary-a30;
+}
+
+.ai-history-title {
+    -fx-text-fill: -md-on-surface;
+    -fx-font-size: 12.5px;
+    -fx-font-weight: bold;
+    -fx-text-overrun: ellipsis;
+}
+
+.ai-history-path {
+    -fx-text-fill: -md-faint;
+    -fx-font-size: 9.5px;
+    -fx-text-overrun: ellipsis;
+}
+
+/* -------------------------------------------------------------- markdown */
+
+.md-view {
+    -fx-background-color: transparent;
+}
+
+.md-flow {
+    -fx-line-spacing: 2;
+}
+
+.md-text {
+    -fx-fill: -md-on-surface;
+    -fx-font-size: 12.5px;
+}
+
+.md-heading {
+    -fx-fill: -md-on-surface;
+    -fx-font-weight: bold;
+}
+
+.md-h1 {
+    -fx-font-size: 16px;
+}
+
+.md-h2 {
+    -fx-font-size: 14.5px;
+}
+
+.md-h3 {
+    -fx-font-size: 13px;
+}
+
+.md-bold {
+    -fx-font-weight: bold;
+}
+
+.md-italic {
+    -fx-font-style: italic;
+}
+
+.md-inline-code {
+    -fx-fill: -md-tertiary;
+    -fx-font-family: "Cascadia Mono", "Consolas", "JetBrains Mono", monospace;
+    -fx-font-size: 11.5px;
+}
+
+.md-link {
+    -fx-fill: -md-primary;
+    -fx-underline: true;
+}
+
+.md-rule {
+    -fx-background-color: -md-line-strong;
+    -fx-min-height: 1;
+    -fx-pref-height: 1;
+    -fx-max-height: 1;
+}
+
+.md-list-item {
+    -fx-padding: 0 0 0 3;
+}
+
+.md-list-marker {
+    -fx-fill: -md-primary;
+}
+
+.md-quote-bar {
+    -fx-background-color: -md-primary-a50;
+    -fx-background-radius: 2;
+}
+
+.md-quote-text {
+    -fx-fill: -md-on-surface-variant;
+    -fx-font-style: italic;
+}
+
+.md-code {
+    -fx-background-color: -md-surface-lowest;
+    -fx-border-color: -md-line;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+}
+
+.md-code-head {
+    -fx-background-color: -md-surface-container;
+    -fx-background-radius: 6 6 0 0;
+    -fx-border-color: transparent transparent -md-line transparent;
+    -fx-border-width: 0 0 1 0;
+    -fx-padding: 5 9 5 9;
+}
+
+.md-code-lang {
+    -fx-text-fill: -md-faint;
+    -fx-font-family: "Cascadia Mono", "Consolas", "JetBrains Mono", monospace;
+    -fx-font-size: 9.5px;
+}
+
+.md-code-head .btn-text {
+    -fx-padding: 1 4 1 4;
+    -fx-font-size: 10px;
+}
+
+.md-code-block {
+    -fx-text-fill: -md-on-surface-variant;
+    -fx-font-family: "Cascadia Mono", "Consolas", "JetBrains Mono", monospace;
+    -fx-font-size: 11px;
+    -fx-padding: 9 11 9 11;
+}
+
+/* ------------------------------------------------------------- AI settings */
+
+.ai-settings .text-field,
+.ai-settings .password-field,
+.ai-settings .combo-box {
+    -fx-pref-height: 32;
+}
